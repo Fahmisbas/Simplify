@@ -1,0 +1,12 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Roboto</item>
+        <item>Sans-Serif</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>roboto</item>
+        <item>sans-serif</item>
+    </string-array>
+</resources>
