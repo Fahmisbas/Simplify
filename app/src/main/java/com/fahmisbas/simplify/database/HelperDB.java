@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class HelperDB extends SQLiteOpenHelper {
+    private SQLiteDatabase database;
+
 
 
     public HelperDB(@Nullable Context context) {

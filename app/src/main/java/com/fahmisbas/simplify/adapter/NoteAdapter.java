@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify;
+package com.fahmisbas.simplify.adapter;
 
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -9,16 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fahmisbas.simplify.R;
 import com.fahmisbas.simplify.database.ContractDB;
 
-class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     private Cursor cursor;
     private OnNoteItemClick onNoteItemClick;
     private OnNoteItemLongClick onNoteItemLongClick;
+    private OnTypeFaceChange onTypeFaceChange;
 
 
-    NoteAdapter(Cursor cursor) {
+    public NoteAdapter(Cursor cursor) {
         this.cursor = cursor;
     }
 
@@ -28,6 +30,10 @@ class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public void setOnNoteItemLongClick(OnNoteItemLongClick onNoteItemLongClick) {
         this.onNoteItemLongClick = onNoteItemLongClick;
+    }
+
+    public void setOnTypeFaceChange(OnTypeFaceChange onTypeFaceChange) {
+        this.onTypeFaceChange = onTypeFaceChange;
     }
 
     @NonNull
@@ -51,6 +57,8 @@ class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.title.setText(title);
         holder.note.setText(note);
         holder.itemView.setTag(id);
+
+        onTypeFaceChange.typfaceChange(holder.title,holder.note);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,5 +109,9 @@ class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public interface OnNoteItemLongClick {
         void onNoteItemLongClickListener(View view, long id);
+    }
+
+    public interface OnTypeFaceChange {
+        void typfaceChange(TextView title, TextView note);
     }
 }

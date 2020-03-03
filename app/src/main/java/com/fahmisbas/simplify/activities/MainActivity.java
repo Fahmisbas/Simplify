@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify;
+package com.fahmisbas.simplify.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,27 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fahmisbas.simplify.R;
+import com.fahmisbas.simplify.adapter.NoteAdapter;
 import com.fahmisbas.simplify.database.ContractDB;
 import com.fahmisbas.simplify.database.HelperDB;
+import com.fahmisbas.simplify.utils.FontTypes;
 import com.fahmisbas.simplify.utils.ImplicitIntents;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-
-import de.cketti.mailto.EmailIntentBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
 
+        setup();
+
+    }
+
+    private void setup() {
         setToolbar();
         initDatabase();
         navigationView();
@@ -54,6 +54,32 @@ public class MainActivity extends AppCompatActivity {
         iniRecyclerView();
         onNoteItemClick();
         onLongNoteItemClick();
+        setTypeface();
+    }
+
+    private void setTypeface() {
+        adapter.setOnTypeFaceChange(new NoteAdapter.OnTypeFaceChange() {
+            @Override
+            public void typfaceChange(TextView title, TextView note) {
+                SharedPreferences sharedPreferences = getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
+                String chosenTf = sharedPreferences.getString("font_preference", null);
+                if (chosenTf != null) {
+                    switch (chosenTf) {
+                        case "Roboto":
+                            new FontTypes(getApplicationContext()).roboto(title, note);
+                            break;
+
+                        case "Sans-Serif":
+                            new FontTypes(getApplicationContext()).sansSerif(title, note);
+                            break;
+
+                        case "Monospace":
+                            new FontTypes(getApplicationContext()).monospace(title, note);
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     private void setToolbar() {
@@ -109,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), EditNote.class);
+                Intent intent = new Intent(getApplicationContext(), EditNoteActivity.class);
                 startActivity(intent);
 
             }
@@ -127,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnNoteItemClick(new NoteAdapter.OnNoteItemClick() {
             @Override
             public void onNoteItemClickListener(String title, String note, long id) {
-                Intent intent = new Intent(getApplicationContext(), EditNote.class);
+                Intent intent = new Intent(getApplicationContext(), EditNoteActivity.class);
                 intent.putExtra("title", title);
                 intent.putExtra("note", note);
                 intent.putExtra("id", id);
@@ -136,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void onLongNoteItemClick(){
+    private void onLongNoteItemClick() {
         adapter.setOnNoteItemLongClick(new NoteAdapter.OnNoteItemLongClick() {
             @Override
-            public void onNoteItemLongClickListener(View view,long id) {
-               dialogDeleteItemPermission(id);
+            public void onNoteItemLongClickListener(View view, long id) {
+                dialogDeleteItemPermission((Long) view.getTag());
 
             }
         });
@@ -156,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         deleteData(id);
                     }
-                }).setNegativeButton("No",null);
+                }).setNegativeButton("No", null);
         builder.show();
     }
 
@@ -164,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         HelperDB helperDB = new HelperDB(this);
         database = helperDB.getWritableDatabase();
         database.delete(ContractDB.EntryDB.TABLE_NAME,
-                ContractDB.EntryDB._ID + "=" + id,null);
+                ContractDB.EntryDB._ID + "=" + id, null);
         MainActivity.adapter.swapCursor(getAllItem());
     }
 

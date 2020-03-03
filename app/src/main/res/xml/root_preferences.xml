@@ -14,15 +14,16 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/messages_header">
 
         <ListPreference
-            app:defaultValue="sans-serif"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="fonts"
+            app:entries="@array/fonts_entries"
+            app:entryValues="@array/fonts_values"
+            app:key="font_preference"
+            app:defaultValue="Sans-Serif"
             app:title="Fonts"
             app:useSimpleSummaryProvider="true" />
 

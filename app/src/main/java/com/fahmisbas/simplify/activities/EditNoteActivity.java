@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify;
+package com.fahmisbas.simplify.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,13 +20,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fahmisbas.simplify.R;
 import com.fahmisbas.simplify.database.ContractDB;
 import com.fahmisbas.simplify.database.HelperDB;
+import com.fahmisbas.simplify.utils.FontTypes;
 
-public class EditNote extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity {
 
     private TextView title;
-    private EditText edtTitle, edtNote;
+    public EditText edtTitle, edtNote;
     private SQLiteDatabase database;
     boolean isEdtTextChanged = false;
     boolean isNewNote = false;
@@ -38,8 +41,29 @@ public class EditNote extends AppCompatActivity {
         edtTitle = findViewById(R.id.edt_title);
         edtNote = findViewById(R.id.edt_note);
 
+        edtTextTypeFace();
         setToolbar();
         edtTextChange();
+    }
+
+    void edtTextTypeFace() {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
+        String chosenTf = sharedPreferences.getString("font_preference", null);
+        if (chosenTf != null) {
+            switch (chosenTf) {
+                case "Roboto":
+                    new FontTypes(this).roboto(edtTitle,edtNote);
+                    break;
+
+                case "Sans-Serif":
+                    new FontTypes(this).sansSerif(edtTitle,edtNote);
+                    break;
+
+                case "Monospace":
+                    new FontTypes(this).monospace(edtTitle,edtNote);
+                    break;
+            }
+        }
     }
 
     private void setToolbar() {
@@ -66,15 +90,18 @@ public class EditNote extends AppCompatActivity {
         } else {
             isNewNote = true;
         }
-
     }
 
     private void edtTextChangeListener() {
         edtTitle.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 isEdtTextChanged = true;
@@ -82,9 +109,13 @@ public class EditNote extends AppCompatActivity {
         });
         edtNote.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 isEdtTextChanged = true;
@@ -104,7 +135,7 @@ public class EditNote extends AppCompatActivity {
             discardOrSave();
             return false;
         }
-        if (isNewNote) {
+        if (isNewNote && !edtTitle.getText().toString().isEmpty() && !edtNote.getText().toString().isEmpty()) {
             saveNewNoteOrNot();
             return false;
         }
@@ -118,13 +149,13 @@ public class EditNote extends AppCompatActivity {
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditNote.super.onBackPressed();
+                        EditNoteActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addData();
-                        EditNote.super.onBackPressed();
+                        EditNoteActivity.super.onBackPressed();
                     }
                 });
         builder.show();
@@ -137,7 +168,7 @@ public class EditNote extends AppCompatActivity {
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditNote.super.onBackPressed();
+                        EditNoteActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("Save", new DialogInterface.OnClickListener() {
                     @Override
@@ -145,7 +176,7 @@ public class EditNote extends AppCompatActivity {
                         Intent intent = getIntent();
                         long id = intent.getLongExtra("id", -1);
                         updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
-                        EditNote.super.onBackPressed();
+                        EditNoteActivity.super.onBackPressed();
                     }
                 });
         builder.show();
@@ -176,9 +207,12 @@ public class EditNote extends AppCompatActivity {
                 long id = intent.getLongExtra("id", -1);
                 if (id != -1) {
                     updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
+                    isEdtTextChanged = false;
                 } else {
                     addData();
+                    super.onBackPressed();
                 }
+
                 break;
 
             case R.id.delete:
@@ -238,7 +272,7 @@ public class EditNote extends AppCompatActivity {
         cv.put(ContractDB.EntryDB.COLUMN_NOTE, note);
         database.update(ContractDB.EntryDB.TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
         MainActivity.adapter.swapCursor(getAllItem());
-        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
     }
 
     private Cursor getAllItem() {
