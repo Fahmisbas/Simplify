@@ -1,15 +1,15 @@
 package com.fahmisbas.simplify.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.ListPreference;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.DropDownPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 
 import com.fahmisbas.simplify.R;
 
@@ -19,26 +19,39 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        toSettingFargment();
+        setToolbar();
+    }
+
+    private void toSettingFargment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.settings, new SettingsFragment(this))
+                .replace(R.id.container_settings, new SettingsFragment(this))
                 .commit();
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        finish();
-        startActivity(intent);
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
-        Context context;
+        private Context context;
+
         SettingsFragment(Context context) {
             this.context = context;
         }
@@ -47,9 +60,28 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-            ListPreference listPreference = findPreference("font_preference");
-            if (listPreference != null) {
-                listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            fontTypePref();
+            autoSavePref();
+        }
+
+        private void autoSavePref() {
+            final SwitchPreference savePreference = findPreference("save_preference");
+            if (savePreference != null) {
+                savePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
+                        sharedPreferences.edit().putBoolean("save_preference", (Boolean) newValue).apply();
+                        return true;
+                    }
+                });
+            }
+        }
+
+        private void fontTypePref() {
+            DropDownPreference fontPreference = findPreference("font_preference");
+            if (fontPreference != null) {
+                fontPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
                         SharedPreferences sharedPreferences = context.getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
@@ -58,7 +90,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
             }
-
         }
     }
 }

@@ -22,13 +22,30 @@ public class FontTypes {
         edtTitle.setTypeface(boldStyle);
     }
 
-    public void sansSerif(EditText edtTitle, EditText edtNote) {
+    public void roboto(TextView tvTitle, TextView tvNote) {
+        normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_regular.ttf");
+        boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_bold.ttf");
+
+        tvNote.setTypeface(normalStyle);
+        tvTitle.setTypeface(boldStyle);
+    }
+
+    public void openSans(EditText edtTitle, EditText edtNote) {
         normalStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
         boldStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
 
         edtTitle.setTypeface(boldStyle);
         edtNote.setTypeface(normalStyle);
     }
+
+    public void openSans(TextView tvTitle, TextView tvNote) {
+        normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/opensans_regular.ttf");
+        boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/opensans_bold.ttf");
+
+        tvNote.setTypeface(normalStyle);
+        tvTitle.setTypeface(boldStyle);
+    }
+
 
     public void monospace(EditText edtTitle, EditText edtNote) {
         normalStyle = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL);
@@ -38,22 +55,6 @@ public class FontTypes {
         edtNote.setTypeface(normalStyle);
     }
 
-    public void roboto(TextView tvTitle, TextView tvNote) {
-        normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_regular.ttf");
-        boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_bold.ttf");
-
-        tvNote.setTypeface(normalStyle);
-        tvTitle.setTypeface(boldStyle);
-    }
-
-    public void sansSerif(TextView tvTitle, TextView tvNote) {
-        normalStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
-        boldStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
-
-        tvTitle.setTypeface(boldStyle);
-        tvNote.setTypeface(normalStyle);
-    }
-
     public void monospace(TextView tvTitle, TextView tvNote) {
         normalStyle = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL);
         boldStyle = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD);
@@ -61,5 +62,23 @@ public class FontTypes {
         tvTitle.setTypeface(boldStyle);
         tvNote.setTypeface(normalStyle);
     }
+
+
+    public void raleway(TextView tvTitle, TextView tvNote) {
+        normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_regular.ttf");
+        boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_bold.ttf");
+
+        tvNote.setTypeface(normalStyle);
+        tvTitle.setTypeface(boldStyle);
+    }
+
+    public void raleway(EditText tvTitle, EditText tvNote) {
+        normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_regular.ttf");
+        boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_bold.ttf");
+
+        tvNote.setTypeface(normalStyle);
+        tvTitle.setTypeface(boldStyle);
+    }
+
 
 }

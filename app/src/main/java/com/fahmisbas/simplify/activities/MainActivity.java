@@ -1,9 +1,11 @@
 package com.fahmisbas.simplify.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 
 import com.fahmisbas.simplify.R;
 import com.fahmisbas.simplify.adapter.NoteAdapter;
-import com.fahmisbas.simplify.database.ContractDB;
+import com.fahmisbas.simplify.database.Crud;
 import com.fahmisbas.simplify.database.HelperDB;
 import com.fahmisbas.simplify.utils.FontTypes;
 import com.fahmisbas.simplify.utils.ImplicitIntents;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SQLiteDatabase database;
     public static NoteAdapter adapter;
+    private Crud crud;
 
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
+        crud = new Crud(getApplicationContext());
 
         setup();
 
@@ -54,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
         iniRecyclerView();
         onNoteItemClick();
         onLongNoteItemClick();
-        setTypeface();
+        setTypefacePreference();
     }
 
-    private void setTypeface() {
+    private void setTypefacePreference() {
         adapter.setOnTypeFaceChange(new NoteAdapter.OnTypeFaceChange() {
             @Override
             public void typfaceChange(TextView title, TextView note) {
@@ -67,14 +70,19 @@ public class MainActivity extends AppCompatActivity {
                     switch (chosenTf) {
                         case "Roboto":
                             new FontTypes(getApplicationContext()).roboto(title, note);
+                            note.setTextSize(15);
                             break;
-
-                        case "Sans-Serif":
-                            new FontTypes(getApplicationContext()).sansSerif(title, note);
+                        case "Open Sans":
+                            new FontTypes(getApplicationContext()).openSans(title, note);
+                            title.setTextSize(18);
+                            note.setTextSize((float) 17.5);
                             break;
-
                         case "Monospace":
                             new FontTypes(getApplicationContext()).monospace(title, note);
+                            note.setTextSize(15);
+                            break;
+                        case "Raleway":
+                            new FontTypes(getApplicationContext()).raleway(title, note);
                             break;
                     }
                 }
@@ -97,12 +105,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void navigationView() {
         final NavigationView navigationView = findViewById(R.id.nav_view);
+        final ImplicitIntents impIntent = new ImplicitIntents(getApplicationContext());
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_send:
-                        ImplicitIntents.emailIntent(getApplicationContext());
+                        impIntent.emailIntent("fahmisulaimanbas@gmail.com", "Simplify - Minimal Note");
                         break;
 
                     case R.id.nav_settings:
@@ -111,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_share:
-                        ImplicitIntents.share(getApplicationContext());
+                        impIntent.share("Download this app : ", "Simple, Minimal note app");
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -144,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void iniRecyclerView() {
         RecyclerView rvNote = findViewById(R.id.rvNote);
-        adapter = new NoteAdapter(getAllItem());
+        adapter = new NoteAdapter(crud.readData());
         rvNote.setAdapter(adapter);
 
     }
@@ -165,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     private void onLongNoteItemClick() {
         adapter.setOnNoteItemLongClick(new NoteAdapter.OnNoteItemLongClick() {
             @Override
-            public void onNoteItemLongClickListener(View view, long id) {
+            public void onNoteItemLongClickListener(View view) {
                 dialogDeleteItemPermission((Long) view.getTag());
 
             }
@@ -174,33 +183,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void dialogDeleteItemPermission(final long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Delete This Item")
+                .setTitle("Delete this note")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setMessage("Are you sure you want to delete this?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteData(id);
+                        crud.deleteData(id);
                     }
                 }).setNegativeButton("No", null);
         builder.show();
-    }
-
-    private void deleteData(long id) {
-        HelperDB helperDB = new HelperDB(this);
-        database = helperDB.getWritableDatabase();
-        database.delete(ContractDB.EntryDB.TABLE_NAME,
-                ContractDB.EntryDB._ID + "=" + id, null);
-        MainActivity.adapter.swapCursor(getAllItem());
-    }
-
-    private Cursor getAllItem() {
-        return database.query(ContractDB.EntryDB.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                ContractDB.EntryDB.TIMESTAMP + " DESC");
     }
 }

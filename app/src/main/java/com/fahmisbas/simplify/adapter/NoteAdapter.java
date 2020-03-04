@@ -70,10 +70,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                onNoteItemLongClick.onNoteItemLongClickListener(holder.itemView, id);
+                onNoteItemLongClick.onNoteItemLongClickListener(holder.itemView);
                 return true;
             }
         });
+
+        if (holder.title.getText().toString().equals("")){
+            holder.title.setText(note);
+        }else if (holder.note.getText().toString().equals("")){
+            holder.note.setText(title);
+        }
     }
 
     public void swapCursor(Cursor newCursor) {
@@ -108,7 +114,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     }
 
     public interface OnNoteItemLongClick {
-        void onNoteItemLongClickListener(View view, long id);
+        void onNoteItemLongClickListener(View view);
     }
 
     public interface OnTypeFaceChange {

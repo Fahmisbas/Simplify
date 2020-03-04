@@ -7,21 +7,25 @@ import de.cketti.mailto.EmailIntentBuilder;
 
 public class ImplicitIntents {
 
+    private Context context;
 
-    public static void share(Context context) {
+    public ImplicitIntents(Context context){
+        this.context = context;
+    }
+
+
+    public void share(String subject, String text) {
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
-        String shareBody = "Download : .....";
-        String shareSub = "Simpliffy - Minimal Note App";
-        myIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-        myIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        myIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        myIntent.putExtra(Intent.EXTRA_TEXT, text);
         context.startActivity(Intent.createChooser(myIntent, "Share to"));
     }
 
-    public static void emailIntent(Context context) {
+    public void emailIntent(String email,String subject) {
         Intent emailIntent = EmailIntentBuilder.from(context)
-                .to("fahmisulaimanbas@gmail.com")
-                .subject("Simplify Note App")
+                .to(email)
+                .subject(subject)
                 .build();
         context.startActivity(emailIntent);
     }

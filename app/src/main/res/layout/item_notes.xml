@@ -35,10 +35,6 @@
             android:text="lorem lorem lorem lorem lorem"
             android:textColor="@color/colorPrimaryDark" />
 
-
-
     </LinearLayout>
-
-
 
 </androidx.cardview.widget.CardView>
