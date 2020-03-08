@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2018 The app Open Source Project
+  ~ Copyright 2018 The simplify Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
             app:entryValues="@array/fonts_values"
             app:iconSpaceReserved="false"
             app:key="font_preference"
-            app:title="Font type"
+            app:title="Font"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
@@ -39,9 +39,27 @@
             app:key="save_preference"
             app:iconSpaceReserved="false"
             app:title="Auto Save"/>
-
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="More"
+        app:iconSpaceReserved="false">
 
+        <Preference
+            app:title="About"
+            app:key="about_preference"
+            app:iconSpaceReserved="false"/>
+        <Preference
+            app:key="version_preference"
+            android:title="Version"
+            app:iconSpaceReserved="false"
+            app:summary="1.0"/>
 
+        <Preference
+            app:title="More App"
+            app:iconSpaceReserved="false"
+            app:key="moreApp_preference"
+            app:summary="Revelate Studio"/>
+
+    </PreferenceCategory>
 </PreferenceScreen>

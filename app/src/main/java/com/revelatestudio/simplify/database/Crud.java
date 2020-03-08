@@ -1,20 +1,18 @@
-package com.fahmisbas.simplify.database;
+package com.revelatestudio.simplify.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fahmisbas.simplify.activities.MainActivity;
+import com.revelatestudio.simplify.activities.MainActivity;
 
 public class Crud {
 
-    private Context context;
     private SQLiteDatabase database;
 
 
     public Crud(Context context){
-        this.context = context;
         HelperDB helperDB = new HelperDB(context);
         database = helperDB.getWritableDatabase();
     }
@@ -24,7 +22,6 @@ public class Crud {
         database.delete(ContractDB.EntryDB.TABLE_NAME,
                 ContractDB.EntryDB._ID + "=" + id, null);
         MainActivity.adapter.swapCursor(readData());
-
     }
 
     public void addData(String title,String note) {

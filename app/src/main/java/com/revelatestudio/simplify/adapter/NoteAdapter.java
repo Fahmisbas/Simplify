@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.adapter;
+package com.revelatestudio.simplify.adapter;
 
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fahmisbas.simplify.R;
-import com.fahmisbas.simplify.database.ContractDB;
+import com.revelatestudio.simplify.R;
+import com.revelatestudio.simplify.database.ContractDB;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
@@ -52,6 +52,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
         final String title = cursor.getString(cursor.getColumnIndex(ContractDB.EntryDB.COLUMN_TITLE));
         final String note = cursor.getString(cursor.getColumnIndex(ContractDB.EntryDB.COLUMN_NOTE));
+        final String timeStamp = cursor.getString(cursor.getColumnIndex(ContractDB.EntryDB.TIMESTAMP));
         final long id = cursor.getLong(cursor.getColumnIndex(ContractDB.EntryDB._ID));
 
         holder.title.setText(title);
@@ -63,7 +64,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onNoteItemClick.onNoteItemClickListener(title, note, id);
+                onNoteItemClick.onNoteItemClickListener(title, note,timeStamp, id);
             }
         });
 
@@ -105,12 +106,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             note = itemView.findViewById(R.id.tv_note);
-
         }
     }
 
     public interface OnNoteItemClick {
-        void onNoteItemClickListener(String title, String note, long id);
+        void onNoteItemClickListener(String title, String note,String timestamp, long id);
     }
 
     public interface OnNoteItemLongClick {

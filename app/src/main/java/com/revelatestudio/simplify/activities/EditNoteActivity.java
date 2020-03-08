@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.activities;
+package com.revelatestudio.simplify.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -11,40 +11,52 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fahmisbas.simplify.R;
-import com.fahmisbas.simplify.database.Crud;
-import com.fahmisbas.simplify.utils.FontTypes;
-import com.fahmisbas.simplify.utils.ImplicitIntents;
+import com.revelatestudio.simplify.R;
+import com.revelatestudio.simplify.database.Crud;
+import com.revelatestudio.simplify.utils.FontTypes;
+import com.revelatestudio.simplify.utils.ImplicitIntents;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class EditNoteActivity extends AppCompatActivity {
 
-    private TextView title;
     private EditText edtTitle, edtNote;
     boolean isEdtTextChanged = false;
     boolean isNewNote = false;
-    boolean autoSave = false;
+    public TextView tvTimeStamp;
     private Crud crud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
-        title = findViewById(R.id.title);
+
         edtTitle = findViewById(R.id.edt_title);
         edtNote = findViewById(R.id.edt_note);
+        tvTimeStamp = findViewById(R.id.timestamp);
+
         crud = new Crud(getApplicationContext());
-        edtTextTypeFace();
+
+        setup();
+    }
+
+    private void setup() {
+        setEdtTextTypeFacePreference();
         setToolbar();
-        edtTextChange();
+        setEdtText();
     }
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView title = findViewById(R.id.tv_toolbar_title);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -60,43 +72,61 @@ public class EditNoteActivity extends AppCompatActivity {
         return true;
     }
 
-    private void edtTextTypeFace() {
+    private void setEdtTextTypeFacePreference() {
         SharedPreferences sharedPreferences = getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
         String chosenTf = sharedPreferences.getString("font_preference", null);
+        FontTypes fontTypes = new FontTypes(getApplicationContext());
         if (chosenTf != null) {
             switch (chosenTf) {
                 case "Roboto":
-                    new FontTypes(this).roboto(edtTitle, edtNote);
+                    fontTypes.roboto(edtTitle, edtNote, tvTimeStamp);
                     break;
 
                 case "Open Sans":
-                    new FontTypes(this).openSans(edtTitle, edtNote);
+                    fontTypes.openSans(edtTitle, edtNote, tvTimeStamp);
                     break;
 
                 case "Monospace":
-                    new FontTypes(this).monospace(edtTitle, edtNote);
+                    fontTypes.monospace(edtTitle, edtNote, tvTimeStamp);
                     break;
 
                 case "Raleway":
-                    new FontTypes(this).raleway(edtTitle, edtNote);
+                    fontTypes.raleway(edtTitle, edtNote, tvTimeStamp);
                     break;
             }
         }
     }
 
-    private void edtTextChange() {
+    private void setEdtText() {
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", -1);
         String title = intent.getStringExtra("title");
         String note = intent.getStringExtra("note");
+        String timestamp = intent.getStringExtra("timestamp");
 
         if (id != -1) {
             edtTitle.setText(title);
             edtNote.setText(note);
+            tvTimeStamp.setText(formatDate(timestamp));
             edtTextChangeListener();
         } else {
             isNewNote = true;
         }
+    }
+
+    private String formatDate(String dateStr) {
+        try {
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = fmt.parse(dateStr);
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMMM yyyy");
+            if (date != null) {
+                return fmtOut.format(date);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     private void edtTextChangeListener() {
@@ -141,25 +171,22 @@ public class EditNoteActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
         boolean isAutoSave = sharedPreferences.getBoolean("save_preference", false);
         if (isAutoSave) {
-            Intent intent = getIntent();
-            long id = intent.getLongExtra("id", -1);
-            if (id != -1) {
-                crud.updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
-                return true;
-            } else {
-                crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
-                return true;
-            }
+            addOrUpdate();
+            return true;
         } else {
-            if (isEdtTextChanged && !autoSave) {
+            if (isEdtTextChanged) {
                 discardOrSave();
                 return false;
             }
-
-            if (isNewNote && !edtTitle.getText().toString().isEmpty() && !edtNote.getText().toString().isEmpty() && !autoSave) {
-                saveNewNoteOrNot();
-                return false;
+            if (isNewNote) {
+                if (!edtTitle.getText().toString().isEmpty() || !edtNote.getText().toString().isEmpty()) {
+                    saveNewNoteOrNot();
+                    isNewNote = false;
+                    return false;
+                }
             }
+
+
             return true;
         }
     }
@@ -173,11 +200,13 @@ public class EditNoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditNoteActivity.super.onBackPressed();
+                        isNewNote = false;
                     }
                 }).setNegativeButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
+                        isNewNote = false;
                         EditNoteActivity.super.onBackPressed();
                     }
                 });
@@ -210,6 +239,9 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        if (isNewNote) {
+            menu.getItem(1).setVisible(false);
+        } else menu.getItem(1).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -222,15 +254,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private void selectedItem(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
-                Intent intent = getIntent();
-                long id = intent.getLongExtra("id", -1);
-                if (id != -1) {
-                    crud.updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
-                    isEdtTextChanged = false;
-                } else {
-                    crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
-                    super.onBackPressed();
-                }
+                addOrUpdate();
                 break;
 
             case R.id.delete:
@@ -239,6 +263,22 @@ public class EditNoteActivity extends AppCompatActivity {
 
             case R.id.share:
                 new ImplicitIntents(this).share(edtTitle.getText().toString(), edtNote.getText().toString());
+                break;
+        }
+    }
+
+    private void addOrUpdate() {
+        Intent intent = getIntent();
+        long id = intent.getLongExtra("id", -1);
+        Log.i("hehe", String.valueOf(id));
+        if (id != -1) {
+            crud.updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
+            isEdtTextChanged = false;
+        } else {
+            if (!edtTitle.getText().toString().isEmpty() || !edtNote.getText().toString().isEmpty()) {
+                crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
+                super.onBackPressed();
+            }
         }
     }
 
@@ -253,6 +293,7 @@ public class EditNoteActivity extends AppCompatActivity {
                         Intent intent = getIntent();
                         long id = intent.getLongExtra("id", -1);
                         crud.deleteData(id);
+                        EditNoteActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("No", null);
         builder.show();

@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.database;
+package com.revelatestudio.simplify.database;
 
 import android.provider.BaseColumns;
 

@@ -25,14 +25,18 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold"
-            android:text="Title" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Lorem Lorem Ipsum dol amet hehehehe " />
 
         <TextView
             android:id="@+id/tv_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:text="lorem lorem lorem lorem lorem"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/dummy"
             android:textColor="@color/colorPrimaryDark" />
 
     </LinearLayout>

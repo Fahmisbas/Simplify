@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_settings" />
+        layout="@layout/toolbar_custom" />
 
     <FrameLayout
         android:id="@+id/container_settings"

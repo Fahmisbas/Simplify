@@ -29,19 +29,22 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_notes" />
+
+
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/_25sdp"
-            app:maxImageSize="56dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_floating_button"
-            android:layout_marginEnd="@dimen/_10sdp"/>
+            app:srcCompat="@drawable/ic_add"
+            app:maxImageSize="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:focusable="true" />
 
     </RelativeLayout>
 
@@ -50,11 +53,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#fafafa"
+        android:background="@color/colorLightGray"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/color_drawer_item"
-        app:itemTextColor="@color/color_drawer_item"
+        app:itemIconTint="@android:color/black"
+        app:itemTextColor="@android:color/black"
+        app:itemBackground="@color/colorLightGray"
         app:menu="@menu/menu_drawer" />
 
 

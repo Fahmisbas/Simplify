@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +10,14 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar_custom" />
 
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"/>
+
     <EditText
         android:id="@+id/edt_title"
         android:layout_width="match_parent"
@@ -19,17 +26,16 @@
         android:layout_marginEnd="@dimen/_20sdp"
         android:hint="Title"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/_30sdp" />
+        android:layout_marginTop="@dimen/_10sdp" />
 
     <EditText
         android:id="@+id/edt_note"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/_21sdp"
-        android:layout_marginEnd="@dimen/_21sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:gravity="top"
         android:background="@null"
         android:hint="Type here..." />
-
 
 </LinearLayout>

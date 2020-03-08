@@ -10,13 +10,14 @@
     app:theme="@style/ToolbarTheme">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tv_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/raleway_bold"
         android:text="Simplify"
-        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/roboto_medium"
-        android:layout_gravity="center"/>
+        android:textSize="@dimen/_17sdp" />
 
 </androidx.appcompat.widget.Toolbar>

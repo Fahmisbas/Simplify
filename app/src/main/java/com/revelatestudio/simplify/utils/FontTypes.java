@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.utils;
+package com.revelatestudio.simplify.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,12 +14,13 @@ public class FontTypes {
         this.context = context;
     }
 
-    public void roboto(EditText edtTitle, EditText edtNote) {
+    public void roboto(EditText edtTitle, EditText edtNote,TextView tvTimestamp) {
         normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_regular.ttf");
         boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/roboto_bold.ttf");
 
         edtNote.setTypeface(normalStyle);
         edtTitle.setTypeface(boldStyle);
+        tvTimestamp.setTypeface(normalStyle);
     }
 
     public void roboto(TextView tvTitle, TextView tvNote) {
@@ -30,12 +31,13 @@ public class FontTypes {
         tvTitle.setTypeface(boldStyle);
     }
 
-    public void openSans(EditText edtTitle, EditText edtNote) {
+    public void openSans(EditText edtTitle, EditText edtNote,TextView tvTimestamp) {
         normalStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
         boldStyle = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
 
         edtTitle.setTypeface(boldStyle);
         edtNote.setTypeface(normalStyle);
+        tvTimestamp.setTypeface(normalStyle);
     }
 
     public void openSans(TextView tvTitle, TextView tvNote) {
@@ -47,12 +49,13 @@ public class FontTypes {
     }
 
 
-    public void monospace(EditText edtTitle, EditText edtNote) {
+    public void monospace(EditText edtTitle, EditText edtNote,TextView tvTimestamp) {
         normalStyle = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL);
         boldStyle = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD);
 
         edtTitle.setTypeface(boldStyle);
         edtNote.setTypeface(normalStyle);
+        tvTimestamp.setTypeface(normalStyle);
     }
 
     public void monospace(TextView tvTitle, TextView tvNote) {
@@ -72,12 +75,13 @@ public class FontTypes {
         tvTitle.setTypeface(boldStyle);
     }
 
-    public void raleway(EditText tvTitle, EditText tvNote) {
+    public void raleway(EditText tvTitle, EditText tvNote,TextView timetamp) {
         normalStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_regular.ttf");
         boldStyle = Typeface.createFromAsset(context.getAssets(), "fonts/raleway_bold.ttf");
 
         tvNote.setTypeface(normalStyle);
         tvTitle.setTypeface(boldStyle);
+        timetamp.setTypeface(normalStyle);
     }
 
 

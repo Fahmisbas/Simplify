@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.utils;
+package com.revelatestudio.simplify.utils;
 
 import android.content.Context;
 import android.content.Intent;

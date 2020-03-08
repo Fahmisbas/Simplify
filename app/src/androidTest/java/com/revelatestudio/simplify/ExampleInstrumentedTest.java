@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify;
+package com.revelatestudio.simplify;
 
 import android.content.Context;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
-        // Context of the app under test.
+        // Context of the simplify under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.fahmisbas.simplify", appContext.getPackageName());

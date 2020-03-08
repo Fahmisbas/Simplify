@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify;
+package com.revelatestudio.simplify;
 
 import org.junit.Test;
 

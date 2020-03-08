@@ -1,4 +1,4 @@
-package com.fahmisbas.simplify.database;
+package com.revelatestudio.simplify.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class HelperDB extends SQLiteOpenHelper {
-    private SQLiteDatabase database;
-
 
 
     public HelperDB(@Nullable Context context) {

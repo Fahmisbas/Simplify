@@ -1,11 +1,9 @@
-package com.fahmisbas.simplify.activities;
+package com.revelatestudio.simplify.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -14,18 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fahmisbas.simplify.R;
-import com.fahmisbas.simplify.adapter.NoteAdapter;
-import com.fahmisbas.simplify.database.Crud;
-import com.fahmisbas.simplify.database.HelperDB;
-import com.fahmisbas.simplify.utils.FontTypes;
-import com.fahmisbas.simplify.utils.ImplicitIntents;
+import com.revelatestudio.simplify.R;
+import com.revelatestudio.simplify.adapter.NoteAdapter;
+import com.revelatestudio.simplify.database.Crud;
+import com.revelatestudio.simplify.utils.FontTypes;
+import com.revelatestudio.simplify.utils.ImplicitIntents;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private SQLiteDatabase database;
     public static NoteAdapter adapter;
     private Crud crud;
 
@@ -51,16 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void setup() {
         setToolbar();
-        initDatabase();
         navigationView();
         floatingActionButton();
         iniRecyclerView();
         onNoteItemClick();
         onLongNoteItemClick();
-        setTypefacePreference();
+        setTextViewTypefacePreference();
     }
 
-    private void setTypefacePreference() {
+    private void setTextViewTypefacePreference() {
         adapter.setOnTypeFaceChange(new NoteAdapter.OnTypeFaceChange() {
             @Override
             public void typfaceChange(TextView title, TextView note) {
@@ -70,16 +65,12 @@ public class MainActivity extends AppCompatActivity {
                     switch (chosenTf) {
                         case "Roboto":
                             new FontTypes(getApplicationContext()).roboto(title, note);
-                            note.setTextSize(15);
                             break;
                         case "Open Sans":
                             new FontTypes(getApplicationContext()).openSans(title, note);
-                            title.setTextSize(18);
-                            note.setTextSize((float) 17.5);
                             break;
                         case "Monospace":
                             new FontTypes(getApplicationContext()).monospace(title, note);
-                            note.setTextSize(15);
                             break;
                         case "Raleway":
                             new FontTypes(getApplicationContext()).raleway(title, note);
@@ -98,10 +89,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initDatabase() {
-        HelperDB helperDB = new HelperDB(this);
-        database = helperDB.getWritableDatabase();
-    }
 
     private void navigationView() {
         final NavigationView navigationView = findViewById(R.id.nav_view);
@@ -120,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_share:
-                        impIntent.share("Download this app : ", "Simple, Minimal note app");
+                        impIntent.share("Download this simplify : ", "Simple, Minimal note simplify");
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -161,11 +148,14 @@ public class MainActivity extends AppCompatActivity {
     private void onNoteItemClick() {
         adapter.setOnNoteItemClick(new NoteAdapter.OnNoteItemClick() {
             @Override
-            public void onNoteItemClickListener(String title, String note, long id) {
+            public void onNoteItemClickListener(String title, String note,String timestamp, long id) {
                 Intent intent = new Intent(getApplicationContext(), EditNoteActivity.class);
+                Log.i("hihi", String.valueOf(id));
+
                 intent.putExtra("title", title);
                 intent.putExtra("note", note);
                 intent.putExtra("id", id);
+                intent.putExtra("timestamp",timestamp);
                 startActivity(intent);
             }
         });

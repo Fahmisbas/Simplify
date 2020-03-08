@@ -22,8 +22,8 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_18sdp"
-            android:fontFamily="@font/roboto_medium"/>
+            android:textSize="@dimen/_17sdp"
+            android:fontFamily="@font/raleway_bold" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
