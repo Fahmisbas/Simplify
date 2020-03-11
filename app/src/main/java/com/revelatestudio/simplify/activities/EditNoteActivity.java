@@ -18,13 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.revelatestudio.simplify.R;
+import com.revelatestudio.simplify.database.ContractDB;
 import com.revelatestudio.simplify.database.Crud;
 import com.revelatestudio.simplify.utils.FontTypes;
 import com.revelatestudio.simplify.utils.ImplicitIntents;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class EditNoteActivity extends AppCompatActivity {
 
@@ -120,7 +123,7 @@ public class EditNoteActivity extends AppCompatActivity {
             Date date = fmt.parse(dateStr);
             SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMMM yyyy");
             if (date != null) {
-                return fmtOut.format(date);
+                return "Last Update, " + fmtOut.format(date);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -228,7 +231,8 @@ public class EditNoteActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = getIntent();
                         long id = intent.getLongExtra("id", -1);
-                        crud.updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
+                        crud.deleteData(id);
+                        crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
                         EditNoteActivity.super.onBackPressed();
                     }
                 });
@@ -270,10 +274,12 @@ public class EditNoteActivity extends AppCompatActivity {
     private void addOrUpdate() {
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", -1);
-        Log.i("hehe", String.valueOf(id));
         if (id != -1) {
-            crud.updateData(id, edtTitle.getText().toString(), edtNote.getText().toString());
-            isEdtTextChanged = false;
+            if (isEdtTextChanged) {
+                crud.deleteData(id);
+                crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
+                isEdtTextChanged = false;
+            }
         } else {
             if (!edtTitle.getText().toString().isEmpty() || !edtNote.getText().toString().isEmpty()) {
                 crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());

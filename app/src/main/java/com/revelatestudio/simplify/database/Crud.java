@@ -32,13 +32,13 @@ public class Crud {
         MainActivity.adapter.swapCursor(readData());
     }
 
-    public void updateData(long id, String title, String note) {
+    /*public void updateData(long id, String title, String note) {
         ContentValues cv = new ContentValues();
         cv.put(ContractDB.EntryDB.COLUMN_TITLE, title);
         cv.put(ContractDB.EntryDB.COLUMN_NOTE, note);
         database.update(ContractDB.EntryDB.TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
         MainActivity.adapter.swapCursor(readData());
-    }
+    }*/
 
     public Cursor readData() {
         return database.query(ContractDB.EntryDB.TABLE_NAME,
