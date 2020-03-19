@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
-        crud = new Crud(getApplicationContext());
 
         setup();
 
     }
 
     private void setup() {
+        crud = new Crud(getApplicationContext());
         setToolbar();
         navigationView();
         floatingActionButton();
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_share:
-                        impIntent.share("Download this simplify : ", "Simple, Minimal note simplify");
+                        impIntent.share("Download this app : https://play.google.com/store/apps/details?id=com.revelatestudio.simplify", "Simple, Minimal note - Simplify");
                         break;
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);

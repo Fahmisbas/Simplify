@@ -10,33 +10,51 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar_custom" />
 
-    <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"/>
-
-    <EditText
-        android:id="@+id/edt_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:hint="Title"
-        android:textStyle="bold"
-        android:textSize="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edt_note"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:gravity="top"
-        android:background="@null"
-        android:hint="Type here..." />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"/>
+
+            <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="Title"
+                android:textStyle="bold"
+                android:textSize="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp" />
+
+            <EditText
+                android:id="@+id/edt_note"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:gravity="top"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@null"
+                android:hint="Type here..." />
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
 
 </LinearLayout>

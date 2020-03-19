@@ -8,26 +8,26 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.revelatestudio.simplify.R;
-import com.revelatestudio.simplify.database.ContractDB;
 import com.revelatestudio.simplify.database.Crud;
 import com.revelatestudio.simplify.utils.FontTypes;
 import com.revelatestudio.simplify.utils.ImplicitIntents;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 public class EditNoteActivity extends AppCompatActivity {
 
@@ -45,7 +45,6 @@ public class EditNoteActivity extends AppCompatActivity {
         edtTitle = findViewById(R.id.edt_title);
         edtNote = findViewById(R.id.edt_note);
         tvTimeStamp = findViewById(R.id.timestamp);
-
         crud = new Crud(getApplicationContext());
 
         setup();
@@ -189,7 +188,6 @@ public class EditNoteActivity extends AppCompatActivity {
                 }
             }
 
-
             return true;
         }
     }
@@ -278,6 +276,7 @@ public class EditNoteActivity extends AppCompatActivity {
             if (isEdtTextChanged) {
                 crud.deleteData(id);
                 crud.addData(edtTitle.getText().toString(), edtNote.getText().toString());
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
                 isEdtTextChanged = false;
             }
         } else {

@@ -1,5 +1,6 @@
 package com.revelatestudio.simplify.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @SuppressLint("SetTextI18n")
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView title = findViewById(R.id.tv_toolbar_title);
@@ -140,6 +142,5 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
         }
-
     }
 }
