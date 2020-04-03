@@ -1,7 +1,7 @@
 # Simplify
 Note-taking App with minimal design
 
-![Simplify](https://raw.githubusercontent.com/Fahmisbas/Simplify/master/simplify.png)
+![Simplify](https://github.com/Fahmisbas/Simplify/blob/master/simplify.png)
 
 ## Features
 - Autosave
