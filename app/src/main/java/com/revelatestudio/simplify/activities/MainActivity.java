@@ -1,5 +1,13 @@
 package com.revelatestudio.simplify.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -9,27 +17,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.revelatestudio.simplify.R;
 import com.revelatestudio.simplify.adapter.NoteAdapter;
 import com.revelatestudio.simplify.database.Crud;
 import com.revelatestudio.simplify.utils.FontTypes;
 import com.revelatestudio.simplify.utils.ImplicitIntents;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private TextView tvEmpty;
     public static NoteAdapter adapter;
     private Crud crud;
 
@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void typfaceChange(TextView title, TextView note) {
                 SharedPreferences sharedPreferences = getSharedPreferences("com.fahmisbas.simplify", MODE_PRIVATE);
-                String chosenTf = sharedPreferences.getString("font_preference", null);
-                if (chosenTf != null) {
-                    switch (chosenTf) {
+                String chosenTypeFace = sharedPreferences.getString("font_preference", null);
+                if (chosenTypeFace != null) {
+                    switch (chosenTypeFace) {
                         case "Roboto":
                             new FontTypes(getApplicationContext()).roboto(title, note);
                             break;
@@ -142,20 +142,17 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rvNote = findViewById(R.id.rvNote);
         adapter = new NoteAdapter(crud.readData());
         rvNote.setAdapter(adapter);
-
     }
 
     private void onNoteItemClick() {
         adapter.setOnNoteItemClick(new NoteAdapter.OnNoteItemClick() {
             @Override
-            public void onNoteItemClickListener(String title, String note,String timestamp, long id) {
+            public void onNoteItemClickListener(String title, String note, String timestamp, long id) {
                 Intent intent = new Intent(getApplicationContext(), EditNoteActivity.class);
-                Log.i("hihi", String.valueOf(id));
-
                 intent.putExtra("title", title);
                 intent.putExtra("note", note);
                 intent.putExtra("id", id);
-                intent.putExtra("timestamp",timestamp);
+                intent.putExtra("timestamp", timestamp);
                 startActivity(intent);
             }
         });
@@ -166,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNoteItemLongClickListener(View view) {
                 dialogDeleteItemPermission((Long) view.getTag());
-
             }
         });
     }

@@ -49,5 +49,4 @@ public class Crud {
                 null,
                 ContractDB.EntryDB.TIMESTAMP + " DESC");
     }
-
 }

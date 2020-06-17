@@ -22,7 +22,6 @@
             android:layout_below="@id/toolbar"
             android:orientation="vertical">
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvNote"
                 android:layout_width="match_parent"
@@ -30,21 +29,21 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_notes" />
 
-
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_add"
-            app:maxImageSize="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:focusable="true" />
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:maxImageSize="@dimen/_25sdp"
+            app:srcCompat="@drawable/ic_add" />
 
     </RelativeLayout>
 
@@ -56,9 +55,9 @@
         android:background="@color/colorLightGray"
         android:theme="@style/ThemeOverlay.MaterialComponents.Light"
         app:headerLayout="@layout/nav_header"
+        app:itemBackground="@color/colorLightGray"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black"
-        app:itemBackground="@color/colorLightGray"
         app:menu="@menu/menu_drawer" />
 
 
